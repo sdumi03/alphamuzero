@@ -5,7 +5,7 @@ from games.history import GameHistory
 import numpy as np
 
 
-def sample_batch(
+def _sample_batch(
     list_of_histories: List[GameHistory],
     n: int,
     prioritize: bool = False,

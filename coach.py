@@ -2,11 +2,12 @@ from abc import ABC, abstractmethod
 from collections import deque
 from typing import List, Generic
 from pickle import Pickler, Unpickler, HIGHEST_PROTOCOL
+import os
 
 from config import ConfigDict
 
-from games.game_history import GameHistory
-from utils import ParameterScheduler
+from games.history import GameHistory
+from utils.parameter_scheduler import ParameterScheduler
 
 
 class Coach(ABC):
@@ -78,7 +79,7 @@ class Coach(ABC):
         step = 0
 
         while not state.done and step < self.config.max_game_moves:
-            temp = self.update_temperature(self.net.steps if self.temp_schedule.config.by_weight_update else step)
+            temp = self.update_temperature(self.net.steps if self.temp_schedule.config.temp_schedule_by_weight_update else step)
 
             pi, v = self.mcts.run_mcts(state, game_history, temp=temp)
 

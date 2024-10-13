@@ -2,7 +2,12 @@ from typing import Generic
 
 from config import ConfigDict
 
-from crafter import Crafter
+from keras.layers import Dense, Input, Reshape, Concatenate, Activation
+from keras.models import Model
+from keras.optimizers import Adam
+
+from utils.crafter import Crafter
+# from utils.minmax import MinMaxScaler
 
 
 class AlphaZeroGymArch:
@@ -31,7 +36,7 @@ class AlphaZeroGymArch:
 
         self.model = Model(inputs=self.observation_history, outputs=[self.pi, self.v])
 
-        opt = Adam(self.config.optimizer.lr_init)
+        opt = Adam(self.config.lr_init)
         if self.config.support_size > 0:
             self.model.compile(loss=['categorical_crossentropy'] * 2, optimizer=opt)
         else:

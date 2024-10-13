@@ -5,8 +5,8 @@ from config import ConfigDict
 from alphazero.net import AlphaZeroNet
 from alphazero.coach import AlphaZeroCoach
 
-from muzero.net import MuZeroNet
-from muzero.coach import MuZeroCoach
+# from muzero.net import MuZeroNet
+# from muzero.coach import MuZeroCoach
 
 
 def learn_alphazero(game: Generic, config: ConfigDict) -> None:

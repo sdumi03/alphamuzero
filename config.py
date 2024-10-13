@@ -10,7 +10,7 @@ class ConfigDict(dict):
     def __setattr__(self, key: Generic, value: Generic) -> None:
         self[key] = value
 
-    def copy(self) -> ConfigDict:
+    def copy(self):
         new = ConfigDict()
 
         for key, value in self.items():
@@ -18,7 +18,7 @@ class ConfigDict(dict):
 
         return new
 
-    def update(self, other: ConfigDict) -> None:
+    def update(self, other) -> None:
         for key, value in other.items():
             if isinstance(value, ConfigDict) and isinstance(self[key], ConfigDict):
                 self[key].update(value)
@@ -30,7 +30,7 @@ class ConfigDict(dict):
             json.dump(self, f)
 
     @staticmethod
-    def load_json(file: str) -> ConfigDict:
+    def load_json(file: str):
         with open(file, 'r') as f:
             config = json.load(f, object_hook=lambda d: ConfigDict(**d))  # object hook maps dict to ConfigDict
 

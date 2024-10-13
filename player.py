@@ -1,8 +1,10 @@
 from abc import ABC, abstractmethod
 from typing import Generic, Optional
 
-from games.game_state import GameState
-from games.game_history import GameHistory
+from games.state import GameState
+from games.history import GameHistory
+
+import numpy as np
 
 
 class Player(ABC):
@@ -33,3 +35,4 @@ class Player(ABC):
 
     @abstractmethod
     def act(self, state: GameState) -> int:
+        pass

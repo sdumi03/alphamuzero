@@ -1,9 +1,10 @@
-from typing import Generic, Optional
+from typing import Generic, Optional, List
 
+from coach import Coach
 from config import ConfigDict
 
 from alphazero.mcts import AlphaZeroMCTS
-from alphazero.player import AlphaZeroPlayer
+from alphazero.player import DefaultAlphaZeroPlayer
 
 from games.history import GameHistory
 
@@ -13,7 +14,7 @@ from utils.sample_batch import _sample_batch
 class AlphaZeroCoach(Coach):
 
     def __init__(self, game: Generic, net: Generic, config: ConfigDict, run_name: Optional[str] = None) -> None:
-        super().__init__(game, net, config, AlphaZeroMCTS, AlphaZeroPlayer)
+        super().__init__(game, net, config, AlphaZeroMCTS, DefaultAlphaZeroPlayer)
 
         # Initialize tensorboard logging.
         # if run_name is None:

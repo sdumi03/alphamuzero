@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Union
+from typing import Union, List
 
 import tensorflow as tf
 import numpy as np
@@ -19,4 +19,5 @@ class Monitor(ABC):
             tf.summary.histogram(name, data=tensor, step=self.net_instance.steps)
 
     @abstractmethod
-    def log_batch(self, data_batch: typing.List) -> None:
+    def log_batch(self, data_batch: List) -> None:
+        pass

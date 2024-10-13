@@ -1,6 +1,9 @@
 from typing import Optional
 
 from player import Player
+from games.state import GameState
+
+import numpy as np
 
 
 class DefaultAlphaZeroPlayer(Player):

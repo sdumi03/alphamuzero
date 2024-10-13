@@ -1,6 +1,8 @@
 from dataclasses import dataclass
 from typing import Generic
 
+import numpy as np
+
 
 @dataclass
 class GameState:

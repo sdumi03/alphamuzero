@@ -3,9 +3,13 @@ from typing import Generic, List, Tuple
 from config import ConfigDict
 
 from alphazero.monitor import AlphaZeroMonitor
-from agents import AlphaZeroNetworks
+from architectures import AlphaZeroArch
 
+from utils.loss import scalar_to_support, support_to_scalar
+
+import os
 import numpy as np
+import tensorflow as tf
 
 
 class AlphaZeroNet:
@@ -13,7 +17,7 @@ class AlphaZeroNet:
     def __init__(self, game: Generic, config: ConfigDict) -> None:
         self.single_player = (game.n_players == 1)
         self.action_size = game.get_action_size()
-        self.net = AlphaZeroNetworks[config.architecture](game, config)
+        self.net = AlphaZeroArch[config.architecture](game, config)
         self.steps = 0
         self.monitor = AlphaZeroMonitor(self)
 
@@ -46,11 +50,13 @@ class AlphaZeroNet:
         self.steps += 1
 
     def predict(self, observations: np.ndarray) -> Tuple[np.ndarray, float]:
-        observation = observations[np.newaxis, ...]
+        # print(tf.shape(observations))
+        observation = observations[np.newaxis, np.newaxis, ...]
+        # print(tf.shape(observation))
 
         pi, v = self.net.model.predict(observation)
 
-        v_real = support_to_scalar(v, self.net.support_size)
+        v_real = support_to_scalar(v, self.net.config.support_size)
 
         return pi[0], np.ndarray.item(v_real)
 

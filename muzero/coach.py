@@ -8,6 +8,7 @@ from config import ConfigDict
 
 from utils.sample_batch import _sample_batch
 
+
 class MuZeroCoach(Coach):
 
     def __init__(self, game: Generic, net: Generic, config: ConfigDict, run_name: Optional[str] = None) -> None:

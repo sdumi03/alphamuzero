@@ -48,12 +48,12 @@ class Crafter:
 
     def dense_sequence(self, n: int, x):
         if n > 0:
-            return self.dense_sequence(n - 1, Dropout(self.args.dropout)(self.activation()(
-                Dense(self.args.size_dense)(x))))
+            return self.dense_sequence(n - 1, Dropout(self.config.dropout)(self.activation()(
+                Dense(self.config.size_dense)(x))))
         return x
 
     def build_conv_block(self, tensor_in, use_bn: bool = True):
-        conv_block = self.conv_tower(self.args.num_towers, tensor_in, use_bn)
+        conv_block = self.conv_tower(self.config.num_towers, tensor_in, use_bn)
         flattened = Flatten()(conv_block)
-        fc_sequence = self.dense_sequence(self.args.num_dense, flattened)
+        fc_sequence = self.dense_sequence(self.config.num_dense, flattened)
         return fc_sequence

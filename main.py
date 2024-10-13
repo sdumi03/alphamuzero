@@ -1,4 +1,4 @@
-import argparser
+import argparse
 
 from typing import Generic
 
@@ -7,9 +7,11 @@ from learn import learn_alphazero, learn_muzero
 
 from games import Games
 
+import tensorflow as tf
+
 
 def main():
-    parser = argparser.ArgumentParser(
+    parser = argparse.ArgumentParser(
         description='A MuZero and AlphaZero implementation in Tensorflow'
     )
 
@@ -29,7 +31,7 @@ def main():
 
     args = parser.parse_args()
 
-    config = ConfigDict.from_json(args.config)
+    config = ConfigDict.load_json(args.config)
 
     game = Games[config.game]()
 

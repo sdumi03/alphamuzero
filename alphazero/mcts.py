@@ -3,7 +3,10 @@ from typing import Generic, Tuple
 from alphazero.net import AlphaZeroNet
 from config import ConfigDict
 
-from utils import MinMaxStats
+from games.state import GameState
+from games.history import GameHistory
+
+from utils.minmax import MinMaxStats
 
 import numpy as np
 
@@ -34,7 +37,7 @@ class AlphaZeroMCTS:
         self.Qsa, self.Ssa, self.Rsa, self.Nsa, self.Ns, self.Ps, self.Vs = [{} for _ in range(7)]
 
     def initialize_root(self, state: GameState, trajectory: GameHistory) -> Tuple[bytes, float]:
-        network_input = trajectory.stack_observations(self.net.config.observation_length, state.observation)
+        network_input = trajectory.stack_observations(self.config.observation_length, state.observation)
         pi_0, v_0 = self.net.predict(network_input)
 
         # creo que s_0 en get_hash hay que cambiar para que sea el ix, sino deja observations
