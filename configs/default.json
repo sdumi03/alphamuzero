@@ -1,0 +1,26 @@
+{
+    "name": "MC_Base",
+    "algorithm": "ALPHAZERO",
+    "architecture": "gym",
+
+    "num_learn_iterations": 1000,
+    "num_games_per_iteration": 20,
+    "num_gradient_steps": 40,
+    "max_game_moves": 500,
+    "max_trial_moves": 500,
+    "pitting": true,
+    "pitting_trials": 10,
+    "pit_acceptance_ratio": 0.0,
+    "dirichlet_alpha": 0.25,
+    "exploration_fraction": 0.25,
+    "max_buffer_size": 200000,
+    "num_MCTS_sims": 11,
+    "prioritize": false,
+    "prioritize_alpha": 0.5,
+    "prioritize_beta": 1,
+    "n_steps": 10,
+    "c1": 1.25,
+    "c2": 19652,
+    "gamma": 0.997
+   
+}
