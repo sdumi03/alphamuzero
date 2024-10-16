@@ -20,7 +20,7 @@ class AlphaZeroGymArch:
 
         # s: batch_size x time x state_x x state_y
         self.observation_history = Input(shape=(
-            self.x,
+            # self.x,
             self.y,
             self.planes * self.config.observation_length
         ))
@@ -29,7 +29,7 @@ class AlphaZeroGymArch:
         self.action_tensor = Input(shape=(self.action_size, ))
 
         observations = Reshape(
-            (self.x * self.y * self.planes * self.config.observation_length, )
+            (self.y * self.planes * self.config.observation_length, )
         )(self.observation_history)
 
         self.pi, self.v = self.build_predictor(observations)

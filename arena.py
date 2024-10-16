@@ -2,6 +2,8 @@ from typing import Generic, Tuple
 
 from config import ConfigDict
 
+from monitor import Monitor
+
 import numpy as np
 
 

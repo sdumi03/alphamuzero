@@ -6,7 +6,7 @@
 
     "checkpoint": "./out/mc_out/alpha/",
     "load_model": false,
-    "load_folder_file": ["./out/mc_out/alpha/", "latest.pth.tar"],
+    "load_folder_file": ["./out/mc_out/alpha/", "latest.weights.h5"],
     "selfplay_buffer_window": 10,
 
     "num_learn_iterations": 1000,

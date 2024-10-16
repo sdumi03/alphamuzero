@@ -3,8 +3,11 @@ from collections import deque
 from typing import List, Generic
 from pickle import Pickler, Unpickler, HIGHEST_PROTOCOL
 import os
+import numpy as np
 
 from config import ConfigDict
+
+from arena import Arena
 
 from games.history import GameHistory
 from utils.parameter_scheduler import ParameterScheduler
@@ -38,6 +41,8 @@ class Coach(ABC):
 
     def learn(self) -> None:
         for i in range(self.config.num_learn_iterations):
+            print()
+            print(f"Iteration: {i}")
             iteration_train_examples = list()
 
             for _ in range(self.config.num_games_per_iteration):
@@ -53,8 +58,9 @@ class Coach(ABC):
 
             replay_buffer_flattened = GameHistory.flatten(self.replay_buffer)
 
-            self.net.save_checkpoint(folder=self.config.checkpoint, filename='temp.pth.tar')
+            self.net.save_checkpoint(folder=self.config.checkpoint, filename='temp.weights.h5')
 
+            print('Training net')
             for _ in range(self.config.num_gradient_steps):
                 batch = self.sample_batch(replay_buffer_flattened)
                 self.net.train(batch)
@@ -62,16 +68,18 @@ class Coach(ABC):
 
             accept = True
             if self.config.pitting:
-                self.opponent_net.load_checkpoint(folder=self.config.checkpoint, filename='temp.pth.tar')
+                self.opponent_net.load_checkpoint(folder=self.config.checkpoint, filename='temp.weights.h5')
 
                 arena = Arena(self.game, self.player_arena, self.opponent_player_arena, self.config.max_trial_moves)
                 accept = arena.pitting(self.config, self.net.monitor)
 
             if accept:
+                print('Accepting new model')
                 self.net.save_checkpoint(folder=self.config.checkpoint, filename=self.get_checkpoint_file(i))
                 self.net.save_checkpoint(folder=self.config.checkpoint, filename=self.config.load_folder_file[-1])
             else:
-                self.net.load_checkpoint(folder=self.args.checkpoint, filename='temp.pth.tar')
+                print('Rejecting new model')
+                self.net.load_checkpoint(folder=self.args.checkpoint, filename='temp.weights.h5')
 
     def execute_episode(self) -> GameHistory:
         game_history = GameHistory()
@@ -98,10 +106,10 @@ class Coach(ABC):
 
     @staticmethod
     def get_checkpoint_file(iteration: int) -> str:
-        return f"checkpoint_{iteration}.pth.tar"
+        return f"checkpoint_{iteration}.weights.h5"
 
     def save_replay_buffer(self, iteration: int) -> None:
-        folder = self.args.checkpoint
+        folder = self.config.checkpoint
         if not os.path.exists(folder): os.makedirs(folder)
 
         filename = os.path.join(folder, self.get_checkpoint_file(iteration) + '.examples')
@@ -114,7 +122,7 @@ class Coach(ABC):
             os.remove(old_checkpoint)
 
     def load_replay_buffer(self) -> None:
-        model_file = os.path.join(self.args.load_folder_file[0], self.args.load_folder_file[1])
+        model_file = os.path.join(self.config.load_folder_file[0], self.config.load_folder_file[1])
         examples_file = model_file + '.examples'
 
         if os.path.isfile(examples_file):

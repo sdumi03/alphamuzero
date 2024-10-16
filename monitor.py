@@ -7,8 +7,9 @@ import numpy as np
 
 class Monitor(ABC):
 
-    def __init__(self, net_instance):
+    def __init__(self, net_instance, config):
         self.net_instance = net_instance
+        self.config = config
 
     def log(self, tensor: Union[tf.Tensor, float], name: str) -> None:
         if self.net_instance.steps % self.net_instance.config.LOG_RATE == 0:

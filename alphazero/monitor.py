@@ -5,8 +5,8 @@ from monitor import Monitor
 
 class AlphaZeroMonitor(Monitor):
 
-    def __init__(self, net_instance):
-        super().__init__(net_instance)
+    def __init__(self, net_instance, config):
+        super().__init__(net_instance, config)
 
     def log_batch(self, data_batch: List) -> None:
         """

@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import Optional
+from typing import Optional, List
 
 from games.state import GameState
 
@@ -90,4 +90,9 @@ class GameHistory:
             trajectory = prefix + trajectory
 
         return np.concatenate(trajectory, axis=-1)  # Concatenate along channel dimension.
+
+    @staticmethod
+    def flatten(nested_histories):
+        return [subitem for item in nested_histories for subitem in item]
+
 

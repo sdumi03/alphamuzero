@@ -30,7 +30,7 @@ class TradingGame(Game):
         ix = np.random.randint(len(df_history) - (self.pred_len + 1), size=1)[0]
 
         next_state = TradingState(
-            canonical_state=df_history.iloc[ix : ix + self.pred_len],
+            canonical_state=df_history.iloc[ix : ix + self.pred_len + 2],
             observation=None,
             player=1,
             action=-1,
@@ -41,14 +41,19 @@ class TradingGame(Game):
 
         return next_state
 
-    def get_next_state(self, state: TradingState, action: int) -> Tuple[TradingState, float]:
+    def get_next_state(self, state: TradingState, action: int, **kwargs) -> Tuple[TradingState, float]:
         if action == 0: position = 1
         if action == 1: position = -1
 
         state.ix += 1
 
-        o = state.canonical_state.iloc[state.ix]['Open']
-        c = state.canonical_state.iloc[state.ix]['Close']
+        try:
+            o = state.canonical_state.iloc[state.ix]['Open']
+            c = state.canonical_state.iloc[state.ix]['Close']
+        except:
+            print(state.ix)
+            print(len(state.canonical_state))
+            raise "kaka"
         if c > o:
             moved = 1
         else:
@@ -56,7 +61,6 @@ class TradingGame(Game):
 
         reward = position * moved
 
-        # no se si asi o con self.pred_len - 1
         done = state.ix >= self.pred_len
 
         next_state = TradingState(

@@ -19,7 +19,7 @@ class AlphaZeroNet:
         self.action_size = game.get_action_size()
         self.net = AlphaZeroArch[config.architecture](game, config)
         self.steps = 0
-        self.monitor = AlphaZeroMonitor(self)
+        self.monitor = AlphaZeroMonitor(self, config)
 
     def train(self, examples: List) -> None:
         observations, targets, loss_scale = list(zip(*examples))
@@ -32,29 +32,29 @@ class AlphaZeroNet:
 
         target_vs = scalar_to_support(target_vs, self.net.config.support_size)
 
-        total_loss, pi_loss, v_loss = self.net.model.train_on_batch(
+        # total_loss, pi_loss, v_loss
+        total_loss = self.net.model.train_on_batch(
             x=observations,
             y=[target_pis, target_vs],
-            sample_weight=[priorities, priorities],
-            reset_metrics=True
+            sample_weight=[priorities, priorities]
         )
 
         l2_norm = tf.reduce_sum([tf.nn.l2_loss(x) for x in self.net.model.get_weights()])
 
-        self.monitor.log(pi_loss, "pi_loss")
-        self.monitor.log(v_loss, "v_loss")
+        # self.monitor.log(pi_loss, "pi_loss")
+        # self.monitor.log(v_loss, "v_loss")
 
-        self.monitor.log(total_loss, "total loss")
-        self.monitor.log(l2_norm, "l2 norm")
+        # self.monitor.log(total_loss, "total loss")
+        # self.monitor.log(l2_norm, "l2 norm")
 
         self.steps += 1
 
     def predict(self, observations: np.ndarray) -> Tuple[np.ndarray, float]:
-        # print(tf.shape(observations))
-        observation = observations[np.newaxis, np.newaxis, ...]
-        # print(tf.shape(observation))
+        # print(observations.shape)
+        observations = observations[np.newaxis, ...]
+        # print(observations.shape)
 
-        pi, v = self.net.model.predict(observation)
+        pi, v = self.net.model.predict(observations, verbose=0)
 
         v_real = support_to_scalar(v, self.net.config.support_size)
 

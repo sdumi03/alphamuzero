@@ -27,14 +27,14 @@ class AlphaZeroCoach(Coach):
     def sample_batch(self, histories: List[GameHistory]) -> List:
         sample_coordinates, sample_weight = _sample_batch(
             list_of_histories=histories,
-            n=self.neural_net.net_args.batch_size,
-            prioritize=self.args.prioritize,
-            alpha=self.args.prioritize_alpha,
-            beta=self.args.prioritize_beta
+            n=self.config.batch_size,
+            prioritize=self.config.prioritize,
+            alpha=self.config.prioritize_alpha,
+            beta=self.config.prioritize_beta
         )
 
         examples = [(
-            histories[h_i].stack_observations(self.net.config.observation_length, t=i),
+            histories[h_i].stack_observations(self.config.observation_length, t=i),
             (histories[h_i].probabilities[i], histories[h_i].observed_returns[i]),
             loss_scale
         )
