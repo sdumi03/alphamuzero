@@ -99,7 +99,7 @@ class Arena:
             # logger.log(p1_score.mean(), "Average Trial Reward")
             # logger.log_distribution(p1_score, "Trial Reward")
 
-            # print(f'AVERAGE PLAYER 1 SCORE: {p1_score.mean()} ; AVERAGE PLAYER 2 SCORE: {p2_score.mean()}')
+            print(f'AVERAGE PLAYER 1 SCORE: {p1_score.mean()} ; AVERAGE PLAYER 2 SCORE: {p2_score.mean()}')
         else:
             losses, wins, draws = self.play_turn_based_games(config.pitting_trials)
 

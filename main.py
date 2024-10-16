@@ -9,6 +9,10 @@ from games import Games
 
 import tensorflow as tf
 
+# para el algoritmo de mcts
+from sys import setrecursionlimit
+setrecursionlimit(2000)
+
 
 def main():
     parser = argparse.ArgumentParser(

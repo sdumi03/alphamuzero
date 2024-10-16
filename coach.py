@@ -60,7 +60,6 @@ class Coach(ABC):
 
             self.net.save_checkpoint(folder=self.config.checkpoint, filename='temp.weights.h5')
 
-            print('Training net')
             for _ in range(self.config.num_gradient_steps):
                 batch = self.sample_batch(replay_buffer_flattened)
                 self.net.train(batch)
